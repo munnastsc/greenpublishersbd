@@ -140,6 +140,10 @@ app.post('/api/books', BookController.create || ((req, res) => res.status(501).s
 app.put('/api/books/:id', BookController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/books/:id', BookController.delete || ((req, res) => res.status(501).send('Not implemented')));
 
+// Activation Codes
+app.post('/api/activation/validate', ActivationController.validate);
+app.post('/api/activation/bulk', ActivationController.bulkGenerate);
+app.get('/api/activation/export', ActivationController.exportCsv);
 app.get('/api/activation', ActivationController.getAll);
 app.get('/api/activation/:id', ActivationController.getById);
 app.post('/api/activation', ActivationController.create);

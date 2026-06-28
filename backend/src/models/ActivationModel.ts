@@ -30,7 +30,7 @@ export class ActivationModel {
     return { valid: true };
   }
   static async getAll() {
-    return await sql`SELECT * FROM "ActivationCode" ORDER BY id DESC`;
+    return await sql`SELECT * FROM "ActivationCode" ORDER BY id DESC LIMIT 500`;
   }
 
   static async getById(id: number) {
@@ -64,5 +64,38 @@ export class ActivationModel {
   static async delete(id: number) {
     await sql`DELETE FROM "ActivationCode" WHERE id = ${id}`;
     return { success: true };
+  }
+
+  static generateRandomCode(length = 8) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < length; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  static async bulkCreate(count: number) {
+    const limit = Math.min(count, 15000); // Max 15000 per batch to be safe with postgres params
+    const codes = new Set<string>();
+    
+    while (codes.size < limit) {
+      codes.add(this.generateRandomCode(8));
+    }
+
+    const codeArray = Array.from(codes);
+    const valuesClause = codeArray.map((_, i) => `($${i + 1})`).join(', ');
+    
+    const query = `INSERT INTO "ActivationCode" (code) VALUES ${valuesClause} ON CONFLICT (code) DO NOTHING`;
+    
+    // @ts-ignore
+    await sql.query(query, codeArray);
+    
+    return { generated: codeArray.length };
+  }
+
+  static async exportUnused() {
+    const res = await sql`SELECT code, "createdAt" FROM "ActivationCode" WHERE "isUsed" = false ORDER BY id DESC`;
+    return res;
   }
 }

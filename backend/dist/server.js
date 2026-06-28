@@ -120,6 +120,10 @@ app.delete('/api/audio/:id', AudioLessonController_1.AudioLessonController.delet
 app.post('/api/books', BookController_1.BookController.create || ((req, res) => res.status(501).send('Not implemented')));
 app.put('/api/books/:id', BookController_1.BookController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/books/:id', BookController_1.BookController.delete || ((req, res) => res.status(501).send('Not implemented')));
+// Activation Codes
+app.post('/api/activation/validate', ActivationController_1.ActivationController.validate);
+app.post('/api/activation/bulk', ActivationController_1.ActivationController.bulkGenerate);
+app.get('/api/activation/export', ActivationController_1.ActivationController.exportCsv);
 app.get('/api/activation', ActivationController_1.ActivationController.getAll);
 app.get('/api/activation/:id', ActivationController_1.ActivationController.getById);
 app.post('/api/activation', ActivationController_1.ActivationController.create);

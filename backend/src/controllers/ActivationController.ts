@@ -73,4 +73,35 @@ export class ActivationController {
       res.status(500).json({ error: 'Server error' });
     }
   }
+
+  static async bulkGenerate(req: Request, res: Response) {
+    try {
+      const count = parseInt(req.body.count, 10);
+      if (!count || count <= 0) {
+        return res.status(400).json({ error: 'Invalid count' });
+      }
+      const result = await ActivationModel.bulkCreate(count);
+      res.json({ success: true, message: `Generated ${result.generated} codes.` });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Server error during bulk generate' });
+    }
+  }
+
+  static async exportCsv(req: Request, res: Response) {
+    try {
+      const records = await ActivationModel.exportUnused();
+      let csv = 'Code,Created At\n';
+      records.forEach((r: any) => {
+        csv += `${r.code},${r.createdAt.toISOString()}\n`;
+      });
+      
+      res.header('Content-Type', 'text/csv');
+      res.attachment('unused_activation_codes.csv');
+      return res.send(csv);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Server error during export' });
+    }
+  }
 }

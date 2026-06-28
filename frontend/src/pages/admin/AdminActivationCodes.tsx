@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Pencil, Trash2, X, Check } from 'lucide-react';
+import { Pencil, Trash2, X, Check, Download, Zap } from 'lucide-react';
 
 export default function AdminActivationCodes() {
   const [items, setItems] = useState<any[]>([]);
@@ -7,6 +7,10 @@ export default function AdminActivationCodes() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
+  
+  // Bulk state
+  const [bulkCount, setBulkCount] = useState(10000);
+  const [isBulking, setIsBulking] = useState(false);
 
   useEffect(() => { fetchItems(); }, []);
 
@@ -17,7 +21,7 @@ export default function AdminActivationCodes() {
     } finally { setLoading(false); }
   };
 
-  const showMsg = (t: string) => { setMsg(t); setTimeout(() => setMsg(''), 3000); };
+  const showMsg = (t: string) => { setMsg(t); setTimeout(() => setMsg(''), 4000); };
 
   const generateRandomCode = () => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -50,6 +54,38 @@ export default function AdminActivationCodes() {
     }
   };
 
+  const handleBulkGenerate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (bulkCount <= 0 || bulkCount > 15000) {
+      return showMsg('Please enter a count between 1 and 15,000');
+    }
+    
+    setIsBulking(true);
+    try {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/activation/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ count: bulkCount })
+      });
+      
+      const data = await res.json();
+      if (res.ok) {
+        showMsg(data.message || `Successfully generated codes!`);
+        fetchItems();
+      } else {
+        showMsg(data.error || 'Failed to bulk generate codes.');
+      }
+    } catch (e) {
+      showMsg('Network error occurred.');
+    } finally {
+      setIsBulking(false);
+    }
+  };
+
+  const handleExportCSV = () => {
+    window.location.href = (import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/activation/export';
+  };
+
   const handleEdit = (item: any) => {
     setEditingId(item.id);
     setFormData({ code: item.code, isUsed: item.isUsed || false, deviceId: item.deviceId || '' });
@@ -67,42 +103,71 @@ export default function AdminActivationCodes() {
       <h2 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--primary-dark)' }}>Manage Activation Codes</h2>
       {msg && <div style={{ padding: '0.75rem 1rem', marginBottom: '1rem', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '6px', border: '1px solid #86efac' }}>{msg}</div>}
 
-      <div style={{ background: 'white', border: `2px solid ${editingId ? 'var(--primary)' : 'var(--border-color)'}`, borderRadius: '10px', padding: '2rem', marginBottom: '2rem' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '1.25rem', color: editingId ? 'var(--primary)' : '#1e293b' }}>
-          {editingId ? 'Edit Code' : 'Add New Code'}
-        </h3>
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-          <div className="input-group">
-            <label className="input-label">Code (Leave empty for random)</label>
-            <input type="text" className="form-control" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} placeholder="e.g. A1B2C3D4" />
-          </div>
-          
-          <div className="input-group">
-            <label className="input-label">Device ID (Optional)</label>
-            <input type="text" className="form-control" value={formData.deviceId} onChange={e => setFormData({...formData, deviceId: e.target.value})} placeholder="Device UUID if bound" />
-          </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+        {/* Single Create Form */}
+        <div style={{ background: 'white', border: `2px solid ${editingId ? 'var(--primary)' : 'var(--border-color)'}`, borderRadius: '10px', padding: '1.5rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '1.25rem', color: editingId ? 'var(--primary)' : '#1e293b' }}>
+            {editingId ? 'Edit Code' : 'Add Single Code'}
+          </h3>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label">Code (Leave empty for random)</label>
+              <input type="text" className="form-control" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} placeholder="e.g. A1B2C3D4" />
+            </div>
+            
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label">Device ID (Optional)</label>
+              <input type="text" className="form-control" value={formData.deviceId} onChange={e => setFormData({...formData, deviceId: e.target.value})} placeholder="Device UUID if bound" />
+            </div>
 
-          <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', gridColumn: '1 / -1' }}>
-            <input type="checkbox" id="isUsed" checked={formData.isUsed} onChange={e => setFormData({...formData, isUsed: e.target.checked})} style={{ width: '18px', height: '18px' }} />
-            <label htmlFor="isUsed" style={{ fontWeight: 600, cursor: 'pointer' }}>Mark as Used</label>
-          </div>
+            <div className="input-group" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: 0 }}>
+              <input type="checkbox" id="isUsed" checked={formData.isUsed} onChange={e => setFormData({...formData, isUsed: e.target.checked})} style={{ width: '18px', height: '18px' }} />
+              <label htmlFor="isUsed" style={{ fontWeight: 600, cursor: 'pointer' }}>Mark as Used</label>
+            </div>
 
-          <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
-            <button type="submit" className="btn btn-blue" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Check size={16} /> {editingId ? 'Update Code' : 'Generate Code'}
-            </button>
-            {editingId && (
-              <button type="button" onClick={() => { setFormData({ code: '', isUsed: false, deviceId: '' }); setEditingId(null); }} className="btn" style={{ background: '#f1f5f9', color: '#475569', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <X size={16} /> Cancel
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+              <button type="submit" className="btn btn-blue" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Check size={16} /> {editingId ? 'Update' : 'Generate Single'}
               </button>
-            )}
-          </div>
-        </form>
+              {editingId && (
+                <button type="button" onClick={() => { setFormData({ code: '', isUsed: false, deviceId: '' }); setEditingId(null); }} className="btn" style={{ background: '#f1f5f9', color: '#475569', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <X size={16} /> Cancel
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
+
+        {/* Bulk Generate Form */}
+        <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '10px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#92400e', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Zap size={18} color="#f59e0b" /> Bulk Generate Codes
+          </h3>
+          <p style={{ fontSize: '0.85rem', color: '#b45309', margin: 0 }}>Generate thousands of unique 8-character codes at once for your physical books.</p>
+          
+          <form onSubmit={handleBulkGenerate} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label">Number of codes to generate (Max 15,000)</label>
+              <input type="number" min="1" max="15000" required className="form-control" value={bulkCount} onChange={e => setBulkCount(Number(e.target.value))} />
+            </div>
+            
+            <button type="submit" disabled={isBulking} className="btn" style={{ background: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', border: 'none', fontWeight: 700, padding: '0.75rem' }}>
+              <Zap size={18} /> {isBulking ? 'Generating...' : `Generate ${bulkCount.toLocaleString()} Codes`}
+            </button>
+          </form>
+        </div>
       </div>
 
       <div style={{ background: 'white', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>All Codes ({items.length})</h3>
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>Latest 500 Codes</h3>
+            <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0.2rem 0 0 0' }}>Preview of the most recently generated codes.</p>
+          </div>
+          
+          <button onClick={handleExportCSV} className="btn" style={{ background: '#10b981', color: 'white', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600 }}>
+            <Download size={16} /> Download UNUSED Codes (CSV)
+          </button>
         </div>
         
         {loading ? <p>Loading...</p> : items.length === 0 ? <p style={{ color: '#94a3b8' }}>No codes yet.</p> : (
