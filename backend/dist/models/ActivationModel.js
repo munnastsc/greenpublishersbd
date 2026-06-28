@@ -42,8 +42,7 @@ class ActivationModel {
         const vals = keys.map((_, i) => '$' + (i + 1)).join(', ');
         const params = keys.map(k => data[k]);
         const query = 'INSERT INTO "ActivationCode" (' + cols + ') VALUES (' + vals + ') RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async update(id, data) {
@@ -53,8 +52,7 @@ class ActivationModel {
         const setClause = keys.map((k, i) => '"' + k + '" = $' + (i + 1)).join(', ');
         const params = [...keys.map(k => data[k]), id];
         const query = 'UPDATE "ActivationCode" SET ' + setClause + ' WHERE id = $' + (keys.length + 1) + ' RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async delete(id) {
@@ -78,8 +76,7 @@ class ActivationModel {
         const codeArray = Array.from(codes);
         const valuesClause = codeArray.map((_, i) => `($${i + 1})`).join(', ');
         const query = `INSERT INTO "ActivationCode" (code) VALUES ${valuesClause} ON CONFLICT (code) DO NOTHING`;
-        // @ts-ignore
-        await db_1.sql.query(query, codeArray);
+        await db_1.sql(query);
         return { generated: codeArray.length };
     }
     static async exportUnused() {

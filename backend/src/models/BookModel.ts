@@ -92,8 +92,7 @@ export class BookModel {
     const setClause = keys.map((k, i) => `"${k}" = $${i + 1}`).join(', ');
     const params = [...keys.map(k => data[k]), id];
     const query = `UPDATE "Book" SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`;
-    // @ts-ignore
-    const result = await sql.query(query, params);
+    const result = await (sql as any)(query, ) as any[];
     return result[0];
   }
 

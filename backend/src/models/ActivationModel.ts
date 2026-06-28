@@ -45,8 +45,7 @@ export class ActivationModel {
     const vals = keys.map((_, i) => '$' + (i + 1)).join(', ');
     const params = keys.map(k => data[k]);
     const query = 'INSERT INTO "ActivationCode" (' + cols + ') VALUES (' + vals + ') RETURNING *';
-    // @ts-ignore
-    const result = await sql.query(query, params);
+    const result = await (sql as any)(query, ) as any[];
     return result[0];
   }
 
@@ -56,8 +55,7 @@ export class ActivationModel {
     const setClause = keys.map((k, i) => '"' + k + '" = $' + (i + 1)).join(', ');
     const params = [...keys.map(k => data[k]), id];
     const query = 'UPDATE "ActivationCode" SET ' + setClause + ' WHERE id = $' + (keys.length + 1) + ' RETURNING *';
-    // @ts-ignore
-    const result = await sql.query(query, params);
+    const result = await (sql as any)(query, ) as any[];
     return result[0];
   }
 
@@ -88,8 +86,7 @@ export class ActivationModel {
     
     const query = `INSERT INTO "ActivationCode" (code) VALUES ${valuesClause} ON CONFLICT (code) DO NOTHING`;
     
-    // @ts-ignore
-    await sql.query(query, codeArray);
+    await (sql as any)(query, );
     
     return { generated: codeArray.length };
   }

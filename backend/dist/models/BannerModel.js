@@ -18,8 +18,7 @@ class BannerModel {
         const vals = keys.map((_, i) => '$' + (i + 1)).join(', ');
         const params = keys.map(k => data[k]);
         const query = 'INSERT INTO "Banner" (' + cols + ') VALUES (' + vals + ') RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async update(id, data) {
@@ -29,8 +28,7 @@ class BannerModel {
         const setClause = keys.map((k, i) => '"' + k + '" = $' + (i + 1)).join(', ');
         const params = [...keys.map(k => data[k]), id];
         const query = 'UPDATE "Banner" SET ' + setClause + ' WHERE id = $' + (keys.length + 1) + ' RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async delete(id) {

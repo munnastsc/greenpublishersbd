@@ -18,8 +18,7 @@ class MenuItemModel {
         const vals = keys.map((_, i) => '$' + (i + 1)).join(', ');
         const params = keys.map(k => data[k]);
         const query = 'INSERT INTO "MenuItem" (' + cols + ') VALUES (' + vals + ') RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async update(id, data) {
@@ -29,8 +28,7 @@ class MenuItemModel {
         const setClause = keys.map((k, i) => '"' + k + '" = $' + (i + 1)).join(', ');
         const params = [...keys.map(k => data[k]), id];
         const query = 'UPDATE "MenuItem" SET ' + setClause + ' WHERE id = $' + (keys.length + 1) + ' RETURNING *';
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async delete(id) {

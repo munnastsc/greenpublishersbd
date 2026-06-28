@@ -76,8 +76,7 @@ class BookModel {
         const setClause = keys.map((k, i) => `"${k}" = $${i + 1}`).join(', ');
         const params = [...keys.map(k => data[k]), id];
         const query = `UPDATE "Book" SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`;
-        // @ts-ignore
-        const result = await db_1.sql.query(query, params);
+        const result = await db_1.sql(query);
         return result[0];
     }
     static async deleteBook(id) {
