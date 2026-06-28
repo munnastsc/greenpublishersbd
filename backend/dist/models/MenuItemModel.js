@@ -4,7 +4,7 @@ exports.MenuItemModel = void 0;
 const db_1 = require("../db");
 class MenuItemModel {
     static async getAll() {
-        return await (0, db_1.sql) `SELECT * FROM "MenuItem" ORDER BY id DESC`;
+        return await (0, db_1.sql) `SELECT * FROM "MenuItem" ORDER BY "order" ASC`;
     }
     static async getById(id) {
         const res = await (0, db_1.sql) `SELECT * FROM "MenuItem" WHERE id = ${id}`;

@@ -2,7 +2,7 @@ import { sql } from '../db';
 
 export class MenuItemModel {
   static async getAll() {
-    return await sql`SELECT * FROM "MenuItem" ORDER BY id DESC`;
+    return await sql`SELECT * FROM "MenuItem" ORDER BY "order" ASC`;
   }
 
   static async getById(id: number) {
