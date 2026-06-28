@@ -41,17 +41,24 @@ export default function Navbar({ initialMenus = [] }: { initialMenus?: any[] }) 
     fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/menuitems')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) setDynamicMenus(data);
+        if (Array.isArray(data) && data.length > 0) {
+          // Sort by order ASC, then by id ASC to guarantee correct order regardless of backend
+          const sorted = [...data].sort((a, b) => {
+            if (a.order !== b.order) return a.order - b.order;
+            return a.id - b.id;
+          });
+          setDynamicMenus(sorted);
+        }
       })
       .catch(console.error);
   }, []);
 
   const navLinks = dynamicMenus.length > 0 ? dynamicMenus : (initialMenus && initialMenus.length > 0 ? initialMenus : [
-    { id: 1, url: '/books', labelEn: 'Books', labelBn: 'বই' },
-    { id: 5, url: '/audio', labelEn: 'Audio', labelBn: 'অডিও' },
-    { id: 6, url: '/videos', labelEn: 'Video', labelBn: 'ভিডিও' },
-    { id: 7, url: '/prosikkhon-manual', labelEn: 'Training Manual', labelBn: 'প্রশিক্ষণ ম্যানুয়াল' },
-    { id: 4, url: '/shiksha-upokoron', labelEn: 'Education Tools', labelBn: 'শিক্ষা উপকরণ' }
+    { id: 1, url: '/books', labelEn: 'Books', labelBn: 'বইসমূহ' },
+    { id: 2, url: '/videos', labelEn: 'Video', labelBn: 'ভিডিও' },
+    { id: 3, url: '/audio', labelEn: 'Audio', labelBn: 'অডিও' },
+    { id: 4, url: '/shiksha-upokoron', labelEn: 'Education Tools', labelBn: 'শিক্ষা উপকরণ' },
+    { id: 5, url: '/prosikkhon-manual', labelEn: 'Training Manual', labelBn: 'প্রশিক্ষণ ম্যানুয়াল' }
   ]);
 
   const DRAWER_ICONS: Record<string, React.ReactNode> = {
