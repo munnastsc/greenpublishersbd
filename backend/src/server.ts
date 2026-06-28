@@ -140,6 +140,12 @@ app.post('/api/books', BookController.create || ((req, res) => res.status(501).s
 app.put('/api/books/:id', BookController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/books/:id', BookController.delete || ((req, res) => res.status(501).send('Not implemented')));
 
+app.get('/api/activation', ActivationController.getAll);
+app.get('/api/activation/:id', ActivationController.getById);
+app.post('/api/activation', ActivationController.create);
+app.put('/api/activation/:id', ActivationController.update);
+app.delete('/api/activation/:id', ActivationController.delete);
+
 app.post('/api/categories', CategoryController.create || ((req, res) => res.status(501).send('Not implemented')));
 app.put('/api/categories/:id', CategoryController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/categories/:id', CategoryController.delete || ((req, res) => res.status(501).send('Not implemented')));

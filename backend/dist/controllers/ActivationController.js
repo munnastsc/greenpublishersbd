@@ -22,5 +22,61 @@ class ActivationController {
             res.status(500).json({ error: 'Internal server error during validation' });
         }
     }
+    static async getAll(req, res) {
+        try {
+            const records = await ActivationModel_1.ActivationModel.getAll();
+            res.json(records);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+    static async getById(req, res) {
+        try {
+            const record = await ActivationModel_1.ActivationModel.getById(Number(req.params.id));
+            if (record)
+                res.json(record);
+            else
+                res.status(404).json({ error: 'Not found' });
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+    static async create(req, res) {
+        try {
+            const record = await ActivationModel_1.ActivationModel.create(req.body);
+            res.json(record);
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+    static async update(req, res) {
+        try {
+            const record = await ActivationModel_1.ActivationModel.update(Number(req.params.id), req.body);
+            if (record)
+                res.json(record);
+            else
+                res.status(404).json({ error: 'Not found' });
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+    static async delete(req, res) {
+        try {
+            await ActivationModel_1.ActivationModel.delete(Number(req.params.id));
+            res.json({ success: true });
+        }
+        catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
 }
 exports.ActivationController = ActivationController;

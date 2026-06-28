@@ -120,6 +120,11 @@ app.delete('/api/audio/:id', AudioLessonController_1.AudioLessonController.delet
 app.post('/api/books', BookController_1.BookController.create || ((req, res) => res.status(501).send('Not implemented')));
 app.put('/api/books/:id', BookController_1.BookController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/books/:id', BookController_1.BookController.delete || ((req, res) => res.status(501).send('Not implemented')));
+app.get('/api/activation', ActivationController_1.ActivationController.getAll);
+app.get('/api/activation/:id', ActivationController_1.ActivationController.getById);
+app.post('/api/activation', ActivationController_1.ActivationController.create);
+app.put('/api/activation/:id', ActivationController_1.ActivationController.update);
+app.delete('/api/activation/:id', ActivationController_1.ActivationController.delete);
 app.post('/api/categories', CategoryController_1.CategoryController.create || ((req, res) => res.status(501).send('Not implemented')));
 app.put('/api/categories/:id', CategoryController_1.CategoryController.update || ((req, res) => res.status(501).send('Not implemented')));
 app.delete('/api/categories/:id', CategoryController_1.CategoryController.delete || ((req, res) => res.status(501).send('Not implemented')));
