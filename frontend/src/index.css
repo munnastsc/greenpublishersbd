@@ -1,0 +1,557 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --primary: #2196f3;          /* Rokomari Blue */
+  --primary-dark: #1976d2;
+  --secondary: #f15a22;        /* Rokomari Orange */
+  --secondary-dark: #d4491a;
+  --bg-color: #f1f2f4;
+  --text-main: #333333;
+  --text-muted: #757575;
+  --border-color: #e0e0e0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --container-width: 1200px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', 'Hind Siliguri', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Typography */
+h1, h2, h3, h4 { font-weight: 700; color: #333; font-family: 'Hind Siliguri', sans-serif; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 0.95rem;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.btn-blue { background-color: var(--primary); color: white; }
+.btn-blue:hover { background-color: var(--primary-dark); }
+
+.btn-orange { background-color: var(--secondary); color: white; }
+.btn-orange:hover { background-color: var(--secondary-dark); }
+
+.btn-outline { 
+  background-color: white; 
+  border: 1px solid var(--primary); 
+  color: var(--primary); 
+}
+.btn-outline:hover { 
+  background-color: var(--primary); 
+  color: white; 
+}
+
+/* Header & Search */
+.top-bar {
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.85rem;
+  padding: 8px 0;
+}
+
+.main-header {
+  background-color: white;
+  padding: 15px 0;
+}
+
+.search-container {
+  display: flex;
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+  background: #f0f2f5;
+  border-radius: 25px;
+  padding: 2px;
+  border: 1px solid #e0e0e0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.search-btn {
+  padding: 0 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+}
+
+.nav-bar {
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.nav-bar ul {
+  display: flex;
+  list-style: none;
+}
+
+.nav-bar li a {
+  display: block;
+  padding: 12px 18px;
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  font-family: 'Hind Siliguri', sans-serif;
+  transition: color 0.2s;
+}
+
+.nav-bar li a:hover {
+  color: var(--primary);
+}
+
+/* Cards */
+.book-card {
+  background: white;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.book-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #ddd;
+}
+
+.book-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 10px 0 4px 0;
+  color: #333;
+  line-height: 1.4;
+  height: 2.8rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.book-author {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.book-price-old {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+  margin-right: 6px;
+}
+
+/* Home Sections */
+.home-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  color: #1e293b;
+  position: relative;
+  font-weight: 800;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  background-color: var(--primary);
+}
+
+/* Subject Cards (Rokomari Style) */
+.subject-card {
+  background: white;
+  padding: 1.5rem 1rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.subject-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.subject-icon {
+  width: 60px;
+  height: 60px;
+  background: #f8fafc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  transition: all 0.3s;
+}
+
+.subject-card:hover .subject-icon {
+  background: var(--primary);
+  color: white;
+}
+
+.subject-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #334155;
+}
+
+/* Product Page Styles */
+.product-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr 280px;
+  gap: 2rem;
+}
+
+.product-image-box {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.product-info-box {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #eee;
+}
+
+.product-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #eee;
+}
+
+/* Form Controls */
+.form-control {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #4b5563;
+}
+
+/* ========= RESPONSIVE ========= */
+
+@media (max-width: 1024px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .product-sidebar {
+    display: none;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .nav-bar ul {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-bar li a {
+    white-space: nowrap;
+    padding: 12px 12px;
+    font-size: 0.88rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hidden-mobile { display: none !important; }
+
+  /* Navbar */
+  .hamburger-btn { display: block !important; }
+  .mobile-search-btn { display: block !important; }
+  .desktop-search { display: none !important; }
+  .desktop-nav { display: none !important; }
+
+  .main-header .container {
+    gap: 0.5rem;
+  }
+
+  /* Book grid on listing pages */
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .book-title { font-size: 0.82rem; }
+  .book-price { font-size: 0.95rem; }
+
+  /* Home sections */
+  .home-section-header {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  /* Categories subject grid */
+  .subject-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Book detail page */
+  .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Checkout page */
+  .checkout-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .checkout-sticky {
+    position: static !important;
+  }
+
+  /* Admin panel */
+  .admin-sidebar {
+    display: none !important;
+  }
+
+  .admin-main {
+    margin-left: 0 !important;
+  }
+
+  /* Form grids */
+  form[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Container padding */
+  .container {
+    padding: 0 12px;
+  }
+
+  /* Section title */
+  .section-title { font-size: 1.15rem; }
+
+  /* Footer grid */
+  footer .container > div {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Banner height */
+  .banner-box {
+    height: 200px !important;
+    padding: 1.5rem !important;
+  }
+
+  .banner-box h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .banner-box p {
+    font-size: 0.9rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Cart page */
+  .cart-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Wishlist */
+  .wishlist-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Auth page */
+  .auth-card {
+    margin: 1rem !important;
+    padding: 1.5rem !important;
+  }
+}
+
+/* ===== STICKY HEADER ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+/* ===== MOBILE DRAWER ANIMATION ===== */
+@keyframes drawerSlideIn {
+  from { transform: translateX(-100%); opacity: 0.5; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.mobile-nav-drawer {
+  animation: drawerSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-nav {
+  display: none;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 6px 4px;
+  transition: color 0.2s;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary);
+}
+
+.bottom-nav-item svg {
+  transition: transform 0.2s;
+}
+
+.bottom-nav-item.active svg {
+  transform: scale(1.15);
+}
+
+.bottom-nav-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: var(--secondary);
+  color: white;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  /* Hide top bar on mobile — saves space */
+  .top-bar { display: none !important; }
+
+  /* Space for bottom nav */
+  body { padding-bottom: 62px; }
+
+  /* Show bottom nav */
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    z-index: 400;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+    align-items: stretch;
+  }
+
+  /* Hide footer link columns — bottom nav covers navigation */
+  .footer-links-hide { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .subject-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .section-title { font-size: 1rem; }
+
+  .main-header {
+    padding: 10px 0;
+  }
+}
