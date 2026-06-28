@@ -45,6 +45,7 @@ export default function AdminLayout() {
     { label: 'Orders', icon: <ShoppingCart size={18} />, href: '/admin/orders' },
     { label: 'Coupons', icon: <Tag size={18} />, href: '/admin/coupons' },
     { label: 'Users', icon: <Users size={18} />, href: '/admin/users' },
+    { label: 'Activation Codes', icon: <Settings size={18} />, href: '/admin/activation-codes' },
     { label: 'Site Settings', icon: <Settings size={18} />, href: '/admin/settings' },
   ];
 

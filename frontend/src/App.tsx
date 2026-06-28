@@ -36,6 +36,7 @@ import AdminTrainingManuals from './pages/admin/AdminTrainingManuals';
 import AdminUnits from './pages/admin/AdminUnits';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminVideos from './pages/admin/AdminVideos';
+import AdminActivationCodes from './pages/admin/AdminActivationCodes';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="coupons" element={<AdminCoupons />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="activation-codes" element={<AdminActivationCodes />} />
             <Route path="settings" element={<AdminSettings />} />
           </Route>
           
