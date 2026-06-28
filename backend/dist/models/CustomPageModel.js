@@ -18,7 +18,8 @@ class CustomPageModel {
         const vals = keys.map((_, i) => '$' + (i + 1)).join(', ');
         const params = keys.map(k => data[k]);
         const query = 'INSERT INTO "CustomPage" (' + cols + ') VALUES (' + vals + ') RETURNING *';
-        const result = await db_1.sql(query);
+        // @ts-ignore
+        const result = await db_1.sql.query(query, params);
         return result[0];
     }
     static async update(id, data) {
@@ -28,7 +29,8 @@ class CustomPageModel {
         const setClause = keys.map((k, i) => '"' + k + '" = $' + (i + 1)).join(', ');
         const params = [...keys.map(k => data[k]), id];
         const query = 'UPDATE "CustomPage" SET ' + setClause + ' WHERE id = $' + (keys.length + 1) + ' RETURNING *';
-        const result = await db_1.sql(query);
+        // @ts-ignore
+        const result = await db_1.sql.query(query, params);
         return result[0];
     }
     static async delete(id) {
