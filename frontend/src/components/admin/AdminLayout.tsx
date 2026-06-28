@@ -38,8 +38,6 @@ export default function AdminLayout() {
     { label: 'Videos', icon: <Video size={18} />, href: '/admin/videos' },
     { label: 'Audio Lessons', icon: <Headphones size={18} />, href: '/admin/audio' },
     { label: 'Units', icon: <Layers size={18} />, href: '/admin/units' },
-    { label: 'শিক্ষা উপকরণ', icon: <BookMarked size={18} />, href: '/admin/educational-materials' },
-    { label: 'প্রশিক্ষণ ম্যানুয়াল', icon: <FileText size={18} />, href: '/admin/training-manuals' },
     { label: 'Custom Pages', icon: <PanelLeft size={18} />, href: '/admin/custom-pages' },
     { label: 'Banners', icon: <ImageIcon size={18} />, href: '/admin/banners' },
     { label: 'Orders', icon: <ShoppingCart size={18} />, href: '/admin/orders' },
@@ -47,6 +45,8 @@ export default function AdminLayout() {
     { label: 'Users', icon: <Users size={18} />, href: '/admin/users' },
     { label: 'Activation Codes', icon: <Settings size={18} />, href: '/admin/activation-codes' },
     { label: 'Site Settings', icon: <Settings size={18} />, href: '/admin/settings' },
+    { label: 'শিক্ষা উপকরণ', icon: <BookMarked size={18} />, href: '/admin/educational-materials' },
+    { label: 'প্রশিক্ষণ ম্যানুয়াল', icon: <FileText size={18} />, href: '/admin/training-manuals' },
   ];
 
   const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
